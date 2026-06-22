@@ -1,0 +1,10 @@
+{
+  "intro_file": "data/intro.jpg",
+  "currentFloor": "3",
+  "pinPos": {
+    "x": 53.5,
+    "y": 19.5
+  },
+  "rotationSeconds": 10,
+  "homeSeconds": 30
+}

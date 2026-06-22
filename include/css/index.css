@@ -1,0 +1,662 @@
+/* --- Local Pretendard Font-Face Declarations --- */
+@font-face {
+  font-family: 'Pretendard';
+  src: url('font/Pretendard-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('font/Pretendard-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('font/Pretendard-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('font/Pretendard-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('font/Pretendard-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src: url('font/Pretendard-Black.woff2') format('woff2');
+  font-weight: 900;
+  font-style: normal;
+}
+
+/* Reset & Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+}
+
+html, body {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+  background-color: #f0f2f5;
+  color: #333;
+  display: flex;
+  padding: 0;
+  margin: 0;
+}
+
+/* Kiosk Layout Container (1080x1920 Fixed Resolution) */
+.kiosk-container {
+  width: 1080px;
+  height: 1920px;
+  background-color: #ffffff;
+  border-radius: 0;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+}
+
+/* 1. Header Styles */
+.kiosk-header {
+  padding: 70px 60px 30px 60px;
+  background-color: #ffffff;
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+
+/* Floor Label Rolling Viewport */
+.floor-label-viewport {
+  width: 220px;
+  height: 143px;
+  overflow: hidden;
+  position: relative;
+  margin-left: 20px;
+  margin-top: -5px;
+}
+
+.floor-label-slider {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.floor-label-item {
+  font-size: 143px;
+  font-weight: 500;
+  color: #000000;
+  line-height: 143px;
+  letter-spacing: -3px;
+  height: 143px;
+  width: 220px;
+  text-align: left;
+}
+
+.active-floor-summary {
+  font-size: 32px;
+  font-weight: 600;
+  color: #000000;
+  letter-spacing: -0.8px;
+  line-height: 1.2;
+  white-space: pre-line;
+}
+
+/* 2. Map Section Styles */
+.map-section {
+  flex: 1;
+  background-color: #ffffff;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.map-viewport {
+  width: 100%;
+  height: 1050px;
+  overflow: hidden;
+  position: relative;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.map-slider {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.map-slide-item {
+  width: 100%;
+  height: 1050px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 60px;
+  position: relative;
+}
+
+.floor-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+/* Location Pin */
+.map-pin {
+  position: absolute;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, -100%);
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  opacity: 0;
+}
+
+@keyframes pinBounce {
+
+  0%,
+  100% {
+    transform: translateY(-10px);
+  }
+
+  50% {
+    transform: translateY(-25px);
+  }
+}
+
+.pin-icon {
+  width: 44px;
+  height: auto;
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.2));
+  animation: pinBounce 1.4s infinite ease-in-out;
+}
+
+.pin-tooltip {
+  background-color: #d32f2f;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 4px;
+  margin-top: -2px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+  white-space: nowrap;
+}
+
+/* White Shadow Fade Overlays */
+.map-fade-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  /* height: 120px; */
+  pointer-events: none;
+  z-index: 5;
+}
+
+.map-fade-overlay.top {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+  border-top: 1px solid #f0f0f0;
+}
+
+.map-fade-overlay.bottom {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+/* 3. Navigation Section Styles */
+.navigation-section {
+  padding: 30px 90px 60px 90px;
+  background-color: #ffffff;
+  position: relative;
+  height: 530px;
+}
+
+.nav-columns-container {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  position: relative;
+  gap: 5px;
+  align-items: start;
+  margin-top: 30px;
+}
+
+.nav-columns-container::before {
+  content: "";
+  position: absolute;
+  top: 97px;
+  /* 인디케이터(top: 98px) 바로 위 */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 830px;
+  height: 1px;
+  background-color: #cccccc;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.nav-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding-bottom: 15px;
+  transition: opacity 0.3s ease;
+}
+
+.nav-column.active {
+  opacity: 1;
+}
+
+.nav-floor-btn {
+  background: none;
+  border: none;
+  font-size: 65px;
+  font-weight: 600;
+  color: #000000;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 5px 0;
+  outline: none;
+  line-height: 1;
+  width: 100%;
+  text-align: center;
+}
+
+.nav-facility-list {
+  list-style: none;
+  margin-top: 55px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  opacity: 0.4;
+  transition: opacity 0.3s ease;
+}
+
+.nav-column.active .nav-facility-list {
+  opacity: 1;
+}
+
+.nav-facility-list li {
+  font-size: 20px;
+  font-weight: 600;
+  color: #555555;
+  text-align: center;
+  line-height: 1.4;
+  white-space: nowrap;
+  letter-spacing: -0.5px;
+  transition: font-weight 0.3s ease, color 0.3s ease;
+}
+
+.nav-column.active .nav-facility-list li {
+  color: #000000;
+  font-weight: 600;
+}
+
+.nav-facility-list li:first-child {
+  margin-top: 20px;
+}
+
+/* Sliding Indicator Bar */
+.nav-indicator {
+  position: absolute;
+  top: 98px;
+  height: 9px;
+  background-color: #3b82f6;
+  border-radius: 0;
+  transition: left 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+    width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+  pointer-events: none;
+}
+
+/* 4. Footer Styles */
+.kiosk-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px 10px 50px;
+  background-color: #f7f9fc;
+  border-top: 1px solid #eef2f6;
+  height: 102px;
+  flex-shrink: 0;
+}
+
+.footer-left {
+  display: flex;
+  align-items: center;
+}
+
+.footer-logo {
+  height: 43px;
+  width: auto;
+}
+
+.footer-center {
+  display: flex;
+  justify-content: center;
+}
+
+.intro-pdf-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 36px;
+  background-color: #e9ecf2;
+  border: 1px solid #d4dae6;
+  border-radius: 6px;
+  font-size: 25px;
+  font-weight: 700;
+  color: #1e293b;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.intro-pdf-btn:hover {
+  background-color: #dfe4ed;
+  border-color: #cbd5e1;
+}
+
+.intro-pdf-btn .btn-icon {
+  width: 30px;
+  height: auto;
+}
+
+.intro-pdf-btn .btn-arrow {
+  width: 10px;
+  height: auto;
+  margin-left: 6px;
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+}
+
+.contact-info {
+  display: flex;
+  align-items: center;
+  font-size: 18px;
+  color: #475569;
+}
+
+.contact-icon {
+  width: 24px;
+  height: auto;
+  margin-right: 10px;
+}
+
+.contact-label {
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.contact-divider {
+  margin: 0 10px;
+  color: #cbd5e1;
+}
+
+.contact-number {
+  font-weight: 800;
+  color: #0f172a;
+  font-size: 22px;
+}
+
+/* Main View / PPT View switching */
+.main-view {
+  width: 100%;
+  height: 1818px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* PPT View Layout */
+.ppt-view {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1080px;
+  height: 1920px;
+  background: url('../../images/bg.png') no-repeat center/cover;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  padding: 0;
+  overflow: hidden;
+}
+
+.ppt-header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 80px;
+  margin-top: 85px;
+  margin-bottom: 50px;
+}
+
+.ppt-logo {
+  max-width: 550px;
+  height: auto;
+}
+
+.ppt-body {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.ppt-slider-container {
+  width: 960px;
+  height: 1120px;
+  background-color: transparent;
+  overflow: hidden;
+  position: relative;
+  border: none;
+}
+
+.ppt-slider {
+  display: flex;
+  width: 1100%;
+  height: 100%;
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.ppt-slide {
+  width: calc(100% / 11);
+  height: 100%;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+}
+
+.ppt-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.ppt-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+  margin-top: 40px;
+}
+
+.ppt-control-btn {
+  width: 112px;
+  height: 56px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  transition: background-image 0.2s;
+}
+
+.ppt-control-btn.prev {
+  background-image: url('../../images/bt_pre.png');
+}
+
+.ppt-control-btn.prev:hover,
+.ppt-control-btn.prev:active {
+  background-image: url('../../images/bt_pre_o.png');
+}
+
+.ppt-control-btn.next {
+  background-image: url('../../images/bt_next.png');
+}
+
+.ppt-control-btn.next:hover,
+.ppt-control-btn.next:active {
+  background-image: url('../../images/bt_next_o.png');
+}
+
+.ppt-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 38px;
+  font-weight: 700;
+  color: #ffffff;
+  min-width: 120px;
+  text-align: center;
+  user-select: none;
+}
+
+.ppt-pagination .page-separator {
+  color: rgba(255, 255, 255, 0.4);
+  margin: 0 10px;
+}
+
+.ppt-pagination .total-pages {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.ppt-footer {
+  margin-top: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ppt-home-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #ffffff;
+  font-size: 28px;
+  font-weight: 700;
+  padding: 22px 90px;
+  cursor: pointer;
+  outline: none;
+  transition: background-color 0.2s, border-color 0.2s;
+  min-width: 295px;
+  text-align: center;
+}
+
+.ppt-home-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Intro Cover Layout */
+.intro-cover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1080px;
+  height: 1818px;
+  background-color: #000000;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.intro-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+}
+
+/* Guide Overlay for verification */
+.kiosk-container::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('../../images/z_guide/001.png');
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 00;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Kiosk-container with guide-2 showing 002.png */
+.kiosk-container.show-guide-2::after {
+  background-image: url('../../images/z_guide/002.png');
+  opacity: 0.5;
+  /* Can be toggled for pixel perfect alignment testing */
+}

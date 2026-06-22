@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>성신인노텍 층별 안내 시스템</title>
+
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="include/css/index.css?v=2">
+
+  <!-- Custom Script -->
+  <script src="include/js/index.js" defer></script>
+</head>
+
+<body>
+
+  <div class="kiosk-container">
+
+    <!-- Main View (Floor Guide) -->
+    <div class="main-view" id="mainView">
+      <!-- 1. Header Area: Selected Floor Info -->
+      <header class="kiosk-header">
+        <div class="header-inner">
+          <div class="floor-label-viewport">
+            <div class="floor-label-slider" id="floorLabelSlider">
+              <div class="floor-label-item">5F</div>
+              <div class="floor-label-item">4F</div>
+              <div class="floor-label-item">3F</div>
+              <div class="floor-label-item">2F</div>
+              <div class="floor-label-item">1F</div>
+              <div class="floor-label-item">B1</div>
+            </div>
+          </div>
+          <p class="active-floor-summary" id="activeFloorSummary">연구개발부 / 연구소장 / 디자인 / 전시실</p>
+        </div>
+      </header>
+
+      <!-- 2. Main Map Area: Vertical Sliding Viewport -->
+      <main class="map-section">
+        <div class="map-viewport" id="mapViewport">
+          <!-- Vertical sliding container for maps -->
+          <div class="map-slider" id="mapSlider">
+            <div class="map-slide-item" data-floor="B1">
+              <img src="images/img_floor_B1.png" alt="B1 지도" class="floor-img">
+            </div>
+            <div class="map-slide-item" data-floor="1">
+              <img src="images/img_floor_1f.png" alt="1F 지도" class="floor-img">
+            </div>
+            <div class="map-slide-item" data-floor="2">
+              <img src="images/img_floor_2f.png" alt="2F 지도" class="floor-img">
+            </div>
+            <div class="map-slide-item" data-floor="3">
+              <img src="images/img_floor_3F.png" alt="3F 지도" class="floor-img">
+            </div>
+            <div class="map-slide-item" data-floor="4">
+              <img src="images/img_floor_4f.png" alt="4F 지도" class="floor-img">
+            </div>
+            <div class="map-slide-item" data-floor="5">
+              <img src="images/img_floor_5f.png" alt="5F 지도" class="floor-img">
+            </div>
+          </div>
+
+          <!-- Location Pin -->
+          <div class="map-pin" id="mapPin">
+            <img src="images/ico_location_1.png" alt="현위치" class="pin-icon">
+            <span class="pin-tooltip">현위치</span>
+          </div>
+
+          <!-- White Fade Overlays (Top & Bottom) -->
+          <div class="map-fade-overlay top"></div>
+          <div class="map-fade-overlay bottom"></div>
+        </div>
+      </main>
+
+      <!-- 3. Navigation & Facilities Area -->
+      <section class="navigation-section">
+        <div class="nav-columns-container" id="navColumnsContainer">
+          <!-- B1 Column -->
+          <div class="nav-column" data-floor-index="0" id="navCol-B1">
+            <button class="nav-floor-btn" aria-label="지하 1층">B1</button>
+            <ul class="nav-facility-list">
+              <li>지하 주차장</li>
+            </ul>
+          </div>
+
+          <!-- 1F Column -->
+          <div class="nav-column" data-floor-index="1" id="navCol-1">
+            <button class="nav-floor-btn" aria-label="1층">1</button>
+            <ul class="nav-facility-list">
+              <li>스마트제조 탈의실</li>
+              <li>스마트제조 사무실</li>
+              <li>이마트 24</li>
+              <li>지상 주차장</li>
+            </ul>
+          </div>
+
+          <!-- 2F Column -->
+          <div class="nav-column" data-floor-index="2" id="navCol-2">
+            <button class="nav-floor-btn" aria-label="2층">2</button>
+            <ul class="nav-facility-list">
+              <li>조립/테스트룸</li>
+              <li>고객지원팀</li>
+              <li>A/S 지원실</li>
+              <li>혁신사업부</li>
+              <li>PC 조립실</li>
+              <li>통합부속실</li>
+            </ul>
+          </div>
+
+          <!-- 3F Column -->
+          <div class="nav-column" data-floor-index="3" id="navCol-3">
+            <button class="nav-floor-btn" aria-label="3층">3</button>
+            <ul class="nav-facility-list">
+              <li>연구개발부</li>
+              <li>연구소장</li>
+              <li>디자인실장</li>
+              <li>전시실</li>
+            </ul>
+          </div>
+
+          <!-- 4F Column -->
+          <div class="nav-column" data-floor-index="4" id="navCol-4">
+            <button class="nav-floor-btn" aria-label="4층">4</button>
+            <ul class="nav-facility-list">
+              <li>대표이사</li>
+              <li>영업관리</li>
+              <li>경영지원</li>
+              <li>본부장</li>
+              <li>S/W개발</li>
+              <li>재경팀</li>
+            </ul>
+          </div>
+
+          <!-- 5F Column -->
+          <div class="nav-column" data-floor-index="5" id="navCol-5">
+            <button class="nav-floor-btn" aria-label="5층">5</button>
+            <ul class="nav-facility-list">
+              <li>옥상정원</li>
+              <li>흡연실</li>
+            </ul>
+          </div>
+
+          <!-- Sliding Blue Underline Indicator -->
+          <div class="nav-indicator" id="navIndicator"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- 4. Footer Area -->
+    <footer class="kiosk-footer" id="kioskFooter">
+      <div class="footer-left">
+        <img src="images/img_logo.png" alt="SUNGSHIN INNOTEC" class="footer-logo">
+      </div>
+      <div class="footer-center">
+        <button class="intro-pdf-btn" id="introPdfBtn">
+          <img src="images/ico_book.png" alt="" class="btn-icon">
+          <span>회사소개서 보기</span>
+          <img src="images/ico_next.png" alt="" class="btn-arrow">
+        </button>
+      </div>
+
+    </footer>
+
+    <!-- 5. PPT View Area -->
+    <div class="ppt-view" id="pptView" style="display: none;">
+      <div class="ppt-header">
+        <img src="images/text_top.png" alt="SUNGSHIN INNOTEC" class="ppt-logo">
+      </div>
+
+      <div class="ppt-body">
+        <div class="ppt-slider-container">
+          <div class="ppt-slider" id="pptSlider">
+            <div class="ppt-slide"><img src="images/ppt/brochure_1.png" alt="Slide 1"></div>
+            <div class="ppt-slide"><img src="images/ppt/brochure_2.png" alt="Slide 2"></div>
+            <div class="ppt-slide"><img src="images/ppt/brochure_3.png" alt="Slide 3"></div>
+            <div class="ppt-slide"><img src="images/ppt/brochure_4.png" alt="Slide 4"></div>
+            <div class="ppt-slide"><img src="images/ppt/brochure_5.png" alt="Slide 5"></div>
+            <div class="ppt-slide"><img src="images/ppt/brochure_6.png" alt="Slide 6"></div>
+            <div class="ppt-slide"><img src="images/ppt/brochure_7.png" alt="Slide 7"></div>
+            <div class="ppt-slide"><img src="images/ppt/brochure_8.png" alt="Slide 8"></div>
+            <div class="ppt-slide"><img src="images/ppt/brochure_9.png" alt="Slide 9"></div>
+            <div class="ppt-slide"><img src="images/ppt/brochure_10.png" alt="Slide 10"></div>
+            <div class="ppt-slide"><img src="images/ppt/brochure_11.png" alt="Slide 11"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="ppt-controls">
+        <button class="ppt-control-btn prev" id="pptPrev" aria-label="이전 슬라이드"></button>
+        <div class="ppt-pagination">
+          <span class="current-page" id="pptCurrentPage">1</span>
+          <span class="page-separator">/</span>
+          <span class="total-pages" id="pptTotalPages">11</span>
+        </div>
+        <button class="ppt-control-btn next" id="pptNext" aria-label="다음 슬라이드"></button>
+      </div>
+
+      <div class="ppt-footer">
+        <button class="ppt-home-btn" id="pptHomeBtn">처음으로</button>
+      </div>
+    </div>
+
+    <!-- 6. Intro Cover Overlay -->
+    <div class="intro-cover" id="introCover" style="display: none;">
+      <img src="data/intro.jpg" alt="Intro Cover" class="intro-img">
+    </div>
+
+  </div>
+</body>
+
+</html>
