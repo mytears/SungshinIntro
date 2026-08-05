@@ -48,8 +48,12 @@ const totalPptSlides = 11; // Total PPT pages
 
 let rotationSeconds = 10;
 let homeSeconds = 30;
+let introRotationSeconds = 5;
 let rotationTimer = null;
 let idleTimer = null;
+let introSlideTimer = null;
+let introSlideIndex = 0;
+let introSlides = [];
 let rotationActive = true;
 
 // 3. Functions
@@ -127,6 +131,45 @@ function updatePptSlider() {
   }
 }
 
+// Build intro slides from either a single path or an array of paths.
+function configureIntroSlides(introFiles) {
+  if (!introCover) return;
+
+  const files = (Array.isArray(introFiles) ? introFiles : [introFiles])
+    .filter(file => typeof file === "string" && file.trim() !== "");
+
+  if (files.length === 0) return;
+
+  introCover.replaceChildren();
+  introSlides = files.map((file, index) => {
+    const img = document.createElement("img");
+    img.src = file;
+    img.alt = `Intro Cover ${index + 1}`;
+    img.className = `intro-img${index === 0 ? " active" : ""}`;
+    introCover.appendChild(img);
+    return img;
+  });
+  introSlideIndex = 0;
+}
+
+function stopIntroSlideshow() {
+  if (introSlideTimer) {
+    clearInterval(introSlideTimer);
+    introSlideTimer = null;
+  }
+}
+
+function startIntroSlideshow() {
+  stopIntroSlideshow();
+  if (introSlides.length < 2) return;
+
+  introSlideTimer = setInterval(() => {
+    introSlides[introSlideIndex].classList.remove("active");
+    introSlideIndex = (introSlideIndex + 1) % introSlides.length;
+    introSlides[introSlideIndex].classList.add("active");
+  }, introRotationSeconds * 1000);
+}
+
 // Show targeted view
 function showView(viewName) {
   if (viewName === 'introCover') {
@@ -134,12 +177,15 @@ function showView(viewName) {
     if (pptView) pptView.style.display = "none";
     if (mainView) mainView.style.display = "flex";
     if (kioskFooter) kioskFooter.style.display = "flex";
+    startIntroSlideshow();
   } else if (viewName === 'pptView') {
+    stopIntroSlideshow();
     if (introCover) introCover.style.display = "none";
     if (pptView) pptView.style.display = "flex";
     if (mainView) mainView.style.display = "none";
     if (kioskFooter) kioskFooter.style.display = "none";
   } else {
+    stopIntroSlideshow();
     if (introCover) introCover.style.display = "none";
     if (pptView) pptView.style.display = "none";
     if (mainView) mainView.style.display = "flex";
@@ -157,12 +203,17 @@ function clearTimers() {
     clearTimeout(idleTimer);
     idleTimer = null;
   }
+  stopIntroSlideshow();
 }
 
 // Start rotation loop (floorGuide <-> introCover)
 function startRotationLoop() {
   clearTimers();
   rotationActive = true;
+
+  if (introCover && introCover.style.display === "block") {
+    startIntroSlideshow();
+  }
   
   const tick = () => {
     if (!rotationActive) return;
@@ -421,9 +472,14 @@ window.addEventListener("DOMContentLoaded", () => {
       // Load configurations from JSON
       if (data.rotationSeconds !== undefined) rotationSeconds = parseFloat(data.rotationSeconds);
       if (data.homeSeconds !== undefined) homeSeconds = parseFloat(data.homeSeconds);
+      if (data.introRotationSeconds !== undefined) {
+        const configuredSeconds = parseFloat(data.introRotationSeconds);
+        if (Number.isFinite(configuredSeconds) && configuredSeconds > 0) {
+          introRotationSeconds = configuredSeconds;
+        }
+      }
       if (introCover && data.intro_file) {
-        const introImg = introCover.querySelector("img");
-        if (introImg) introImg.src = data.intro_file;
+        configureIntroSlides(data.intro_file);
       }
 
       // Find the index of the configured currentFloor (supporting labels "B1", "1F", "2F", etc.)

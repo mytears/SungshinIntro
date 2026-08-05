@@ -1,6 +1,14 @@
 {
-  "intro_file": "data/intro.jpg",
-  "currentFloor": "3",
+  "intro_file": [
+    "data/intro_01.jpg",
+    "data/intro_02.jpg",
+    "data/intro_03.jpg",
+    "data/intro_04.jpg",
+    "data/intro_05.jpg",
+    "data/intro_06.jpg"
+  ],
+  "introRotationSeconds": 1,
+  "currentFloor": "1F",
   "pinPos": {
     "x": 53.5,
     "y": 19.5

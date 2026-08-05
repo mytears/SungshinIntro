@@ -629,12 +629,20 @@ body {
 }
 
 .intro-img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
   -webkit-user-drag: none;
   user-drag: none;
   pointer-events: none;
+}
+
+.intro-img.active {
+  opacity: 1;
 }
 
 /* Guide Overlay for verification */
